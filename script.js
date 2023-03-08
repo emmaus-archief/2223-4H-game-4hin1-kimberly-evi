@@ -94,7 +94,7 @@ function setup() {
   createCanvas(1280, 720);
 
   // Kleur de achtergrond blauw, zodat je het kunt zien
-  background('blue');
+  background('rgb(0,148,82)');
 }
 
 /**
