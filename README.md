@@ -18,3 +18,14 @@ https://emmauscollege.github.io/informatica/game/
 - icon <br>
         http://www.iconarchive.com/show/android-lollipop-icons-by-dtafalonso/Play-Games-icon.html
 - ...
+
+[] 1. rechthoek maken die naar voor en achter kan bewegen
+[] 2. objecten maken die de auto op kan pakken
+[] 3. kleuren veranderen 
+[] 4. zorgen dat auto naar links en rechts kan bewegen (en draaien)
+[] 5. auto meer vorm geven
+[] 6. eerste doolhof maken
+[] 7. tweede doolhof maken
+[] 8. derde doolhof maken
+[] 9. zorgen dat er een object is die zorgt dat je opnieuw moet beginnen
+[] 10. tussen menu maken (voor tussen de levels)
