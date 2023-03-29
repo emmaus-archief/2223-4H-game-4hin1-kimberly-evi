@@ -19,10 +19,10 @@ https://emmauscollege.github.io/informatica/game/
         http://www.iconarchive.com/show/android-lollipop-icons-by-dtafalonso/Play-Games-icon.html
 - ...
 
-[] 1. rechthoek maken die naar voor en achter kan bewegen
-[] 2. objecten maken die de auto op kan pakken
-[] 3. kleuren veranderen 
-[] 4. zorgen dat auto naar links en rechts kan bewegen (en draaien)
+[x] 1. rechthoek maken die naar voor en achter kan bewegen
+[x] 2. zorgen dat auto naar links en rechts kan bewegen (en draaien)
+[] 3. objecten maken die de auto op kan pakken
+[] 4. kleuren veranderen 
 [] 5. auto meer vorm geven
 [] 6. eerste doolhof maken
 [] 7. tweede doolhof maken

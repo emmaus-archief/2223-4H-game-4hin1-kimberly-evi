@@ -26,6 +26,7 @@ const KEY_DOWN = 40;
 var spelerX = 600; // x-positie van speler
 var spelerY = 600; // y-positie van speler
 
+
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
 /* ********************************************* */
@@ -83,7 +84,7 @@ var tekenAlles = function() {
 
   // speler
   fill("white");
-  rect(spelerX - 25, spelerY - 25, 50, 50);
+  rect(spelerX - 25, spelerY - 25, 100, 50);
   fill("black");
   ellipse(spelerX, spelerY, 10, 10);
 
