@@ -17,7 +17,9 @@
 /* ********************************************* */
 const SPELEN = 1;
 const GAMEOVER = 2;
+const UITLEG = 8;
 var spelStatus = SPELEN;
+
 const KEY_LEFT =  37;
 const KEY_RIGHT = 39;
 const KEY_UP = 38;
@@ -25,6 +27,9 @@ const KEY_DOWN = 40;
 
 var spelerX = 600; // x-positie van speler
 var spelerY = 600; // y-positie van speler
+
+var vijandX = 600;
+var vijandY = 500;
 
 
 /* ********************************************* */
@@ -64,7 +69,7 @@ var beweegAlles = function() {
  */
 var verwerkBotsing = function() {
   // botsing speler tegen vijand
-
+     
   // botsing kogel tegen vijand
 
   // update punten en health
@@ -79,7 +84,10 @@ var tekenAlles = function() {
   fill('green');
   rect(0,0,1280,720)
   // vijand
-
+fill ("red")
+  rect(vijandX -25, vijandY -25, 50,50);
+  fill("black")
+  ellipse(vijandX, vijandY, 10, 10);
   // kogel
 
   // speler
@@ -96,7 +104,14 @@ var tekenAlles = function() {
  * return true als het gameover is
  * anders return false
  */
-var checkGameOver = function() {
+var checkGameOver = function() { 
+  if(spelerX - vijandX <50 &&
+       spelerX - vijandX > -50 &&
+       spelerY - vijandY <50 &&
+       spelerY - vijandY > -50) {
+       aantal = aantal +1;
+       console.log ("Botsing" +aantal);
+       }
   // check of HP 0 is , of tijd op is, of ...
   return false;
 };
@@ -131,9 +146,22 @@ function draw() {
     if (checkGameOver()) {
       spelStatus = GAMEOVER;
     }
+    console.log("spelen");
+    textSize(20);
+    fill("black");
+    text("game over, druk spatie voor start", 100, 100);
+    if (keyIsDown(32)){ //spatie
+      spelStatus = SPELEN;
+      
+    }
   }
   if (spelStatus === GAMEOVER) {
+    console.log("game over");
     // teken game-over scherm
 
+  }
+  if (spelStatus === UITLEG){
+    console.log("uitleg");
+    // teken uitleg scherm
   }
 }
