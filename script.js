@@ -41,6 +41,7 @@ var vijandY = 500;
  */
 var beweegAlles = function() {
   // speler
+  //test
   if (keyIsDown(KEY_LEFT)){
        spelerX = spelerX -3; 
   }
@@ -69,7 +70,9 @@ var beweegAlles = function() {
  */
 var verwerkBotsing = function() {
   // botsing speler tegen vijand
-     
+  if (spelerX === vijandX &&
+      spelerY === vijandY) {
+      }
   // botsing kogel tegen vijand
 
   // update punten en health
