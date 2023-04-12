@@ -70,9 +70,7 @@ var beweegAlles = function() {
  */
 var verwerkBotsing = function() {
   // botsing speler tegen vijand
-  if (spelerX === vijandX &&
-      spelerY === vijandY) {
-      }
+  
   // botsing kogel tegen vijand
 
   // update punten en health
@@ -95,7 +93,7 @@ fill ("red")
 
   // speler
   fill("white");
-  rect(spelerX - 25, spelerY - 25, 100, 50);
+  rect(spelerX - 25, spelerY - 25, 50, 50);
   fill("black");
   ellipse(spelerX, spelerY, 10, 10);
 
@@ -153,7 +151,8 @@ function draw() {
     textSize(20);
     fill("black");
     text("game over, druk spatie voor start", 100, 100);
-    if (keyIsDown(32)){ //spatie
+    if (keyIsDown(32)){ //spaties
+      spelerX = 400;
       spelStatus = SPELEN;
       
     }
@@ -165,6 +164,15 @@ function draw() {
   }
   if (spelStatus === UITLEG){
     console.log("uitleg");
+    textSize(50);
+    fill(green);
+    rect(0,0, 1280, 720);
+    fill(white);
+    text("uitleg doe je ding, druk op enter", 100, 100);
+    if (keyIsDown(13)) { //enter
+     spelerX = 400;
+      spelStatus = SPELEN;
     // teken uitleg scherm
+    }
   }
 }
