@@ -29,7 +29,7 @@ var spelerX = 600; // x-positie van speler
 var spelerY = 600; // y-positie van speler
 
 var vijandX = 600;
-var vijandY = 500;
+var vijandY = 499;
 
 
 /* ********************************************* */
@@ -86,14 +86,14 @@ var tekenAlles = function() {
   rect(0,0,1280,720)
   // vijand
 fill ("red")
-  rect(vijandX -25, vijandY -25, 50,50);
+  rect(vijandX - 25, vijandY -25, 50,50);
   fill("black")
   ellipse(vijandX, vijandY, 10, 10);
   // kogel
 
   // speler
   fill("white");
-  rect(spelerX - 25, spelerY - 25, 50, 50);
+  rect(spelerX - 25, spelerY - 25, 50, 80);
   fill("black");
   ellipse(spelerX, spelerY, 10, 10);
 
@@ -131,7 +131,7 @@ function setup() {
   createCanvas(1280, 720);
 
   // Kleur de achtergrond blauw, zodat je het kunt zien
-  background('rgb(0,148,82)');
+  background('rgb(138,169,246)');
 }
 
 /**
