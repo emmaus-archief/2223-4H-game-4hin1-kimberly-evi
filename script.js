@@ -84,6 +84,7 @@ var verwerkBotsing = function() {
  */
 var tekenAlles = function() {
   // achtergrond
+  
   fill('green');
   rect(0, 0, 1280, 720)
   // vijand
@@ -100,12 +101,14 @@ var tekenAlles = function() {
 
   // speler
   fill("white");
-  rect(spelerX - 25, spelerY - 25, 50, 80);
+  image(img, spelerX - 25, spelerY - 25, 100, 200);
   fill("black");
   ellipse(spelerX, spelerY, 10, 10);
   function setup() {
-    image(img, 0, 0);
+    image(img,0,0);
   }
+
+  
   // punten en health
 
 };
@@ -172,7 +175,7 @@ function draw() {
     textSize(20);
     fill("black");
     text("game over, druk spatie voor start", 100, 100);
-    if (keyIsDown(32)) { //spaties
+    if (keyIsDown(32 )) { //spaties
       spelerX = 400;
       spelStatus = UITLEG;
 
