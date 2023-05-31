@@ -26,13 +26,16 @@ const KEY_RIGHT = 39;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
-var spelerX = 600; // x-positie van speler
-var spelerY = 600; // y-positie van speler
+var spelerX = 0; // x-positie van speler
+var spelerY = 0; // y-positie van speler
 
-var vijandX = 600;
-var vijandY = 499;
+var kogelX = 400;
+var kogelY = 300;
+var kogelVliegt = false;
 
 var img; //plaatje 
+
+
 
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
@@ -63,7 +66,20 @@ var beweegAlles = function() {
   // vijand
 
   // kogel
-};
+  if (kogelVliegt === false && 
+      keyIsDown(32)) {
+    kogelVliegt = true;
+    kogelX = spelerX;
+    kogelY = spelerY;
+}
+if (kogelVliegt === true) {
+  kogelY = kogelY + 1;
+}
+if (kogelVliegt === true && 
+   kogelY < 0) {
+  kogelVliegt = false;
+   }
+  };
 
 /**
  * Checkt botsingen
@@ -86,27 +102,21 @@ var tekenAlles = function() {
   // achtergrond
   
   fill('green');
-  rect(0, 0, 1280, 720)
+  rect(0, 0, 1280, 720);
   // vijand
-  fill("red")
-  rect(vijandX - 25, vijandY - 25, 50, 50);
-  fill("black")
-  ellipse(vijandX, vijandY, 10, 10);
-  //vijand 2
-  fill("red")
-  rect(vijandX - 50, vijandY - 60, 50, 50);
-  fill("black")
-  ellipse(vijandX, vijandY, 10, 10);
-  // kogel
 
+  //vijand 2
+  
+  // kogel
+  fill("red");
+  ellipse (kogelX, kogelY, 20, 20);
+  
   // speler
   fill("white");
-  image(img, spelerX - 25, spelerY - 25, 100, 200);
+  image(img, spelerX - 25, spelerY - 25, 110, 75);
   fill("black");
   ellipse(spelerX, spelerY, 10, 10);
-  function setup() {
-    image(img,0,0);
-  }
+
 
   
   // punten en health
@@ -118,12 +128,12 @@ var tekenAlles = function() {
  * anders return false
  */
 var checkGameOver = function() {
-  if (spelerX - vijandX < 50 &&
-    spelerX - vijandX > -50 &&
-    spelerY - vijandY < 50 &&
-    spelerY - vijandY > -50) {
-    aantal = aantal + 1;
-    console.log("Botsing" + aantal);
+  if (spelerX - kogelX < 50 &&
+    spelerX - kogelX > -50 &&
+    spelerY - kogelY < 50 &&
+    spelerY - kogelY > -50) {
+    //aantal = aantal + 1;
+    //console.log("Botsing" + aantal);
     return true;
   }
   // check of HP 0 is , of tijd op is, of ...
@@ -176,7 +186,6 @@ function draw() {
     fill("black");
     text("game over, druk spatie voor start", 100, 100);
     if (keyIsDown(32 )) { //spaties
-      spelerX = 400;
       spelStatus = UITLEG;
 
     }
@@ -185,12 +194,13 @@ function draw() {
     // teken uitleg scherm
     console.log("uitleg");
     textSize(50);
-    fill("green")
-    rect(0, 0, 1280, 720)
+    fill("green");
+    rect(0, 0, 1280, 720);
     fill("white");
     text("uitleg doe je ding, druk op enter", 100, 100);
     if (keyIsDown(13)) { //enter
-      spelerX = 400;
+      spelerX = 30;
+      spelerY = 350;
       spelStatus = SPELEN;
 
     }
