@@ -21,11 +21,11 @@ https://emmauscollege.github.io/informatica/game/
 
 [x] 1. rechthoek maken die naar voor en achter kan bewegen
 [x] 2. zorgen dat auto naar links en rechts kan bewegen (en draaien)
-[] 3. objecten maken die de auto op kan pakken
-[] 4. kleuren veranderen 
-[] 5. auto meer vorm geven
-[] 6. eerste doolhof maken
-[] 7. tweede doolhof maken
+[X] 3. objecten maken die de auto op kan pakken
+[X] 4. kleuren veranderen 
+[X] 5. auto meer vorm geven
+[X] 6. eerste doolhof maken
+[X] 7. tweede doolhof maken
 [] 8. derde doolhof maken
 [] 9. zorgen dat er een object is die zorgt dat je opnieuw moet beginnen
 [] 10. tussen menu maken (voor tussen de levels)
