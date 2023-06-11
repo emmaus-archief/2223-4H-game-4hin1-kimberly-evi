@@ -8,203 +8,237 @@
  */
 
 /*
- * instellingen om foutcontrole van je code beter te maken 
+ * instellingen om foutcontrole van je code beter te maken
  */
 ///<reference path="p5.global-mode.d.ts" />
 "use strict"
 
-/* ********************************************* */
-/* globale variabelen die je gebruikt in je game */
-/* ********************************************* */
-const SPELEN = 1;
-const GAMEOVER = 2;
-const UITLEG = 8;
+
+  /* ***** */
+/* Variabelen */
+/* ***** */
+
+// Spelstatus
+var UITLEG = 0;
+var SPELEN = 1;
+var GAMEOVER = 2;
 var spelStatus = UITLEG;
 
-const KEY_LEFT = 37;
-const KEY_RIGHT = 39;
-const KEY_UP = 38;
-const KEY_DOWN = 40;
+// Score
+var score = 0;
 
-var spelerX = 0; // x-positie van speler
-var spelerY = 0; // y-positie van speler
+// Speler
+var spelerImg;
+var spelerWidth;
+var spelerHeight;
+var spelerX;
+var spelerY;
+var moveLeft = false;
+var moveRight = false;
+var moveUp = false;
+var moveDown = false;
 
-var kogelX = 400;
-var kogelY = 300;
-var kogelVliegt = false;
+// Kogel
+var kogelX;
+var kogelY;
 
-var img; //plaatje 
+// Vierkanten
+var vierkanten = [];
+var lastVierkantTime;
 
+// Tijd
+var startTime;
 
-
-/* ********************************************* */
-/* functies die je gebruikt in je game           */
-/* ********************************************* */
+/* ***** */
+/* Functies */
+/* ***** */
 
 /**
- * Updatet globale variabelen met posities van speler, vijanden en kogels
+ * Beweegt speler, kogel en vierkanten op basis van gebruikersinvoer en spelregels
  */
 var beweegAlles = function() {
-  // speler
-  //test
-  if (keyIsDown(KEY_LEFT)) {
-    spelerX = spelerX - 3;
-  }
-
-  if (keyIsDown(KEY_RIGHT)) {
-    spelerX = spelerX + 3;
-  }
-
-  if (keyIsDown(KEY_UP)) {
-    spelerY = spelerY - 3;
-  }
-
-  if (keyIsDown(KEY_DOWN)) {
-    spelerY = spelerY + 3;
-  }
-
-  // vijand
-
-  // kogel
-  if (kogelVliegt === false && 
-      keyIsDown(32)) {
-    kogelVliegt = true;
-    kogelX = spelerX;
-    kogelY = spelerY;
+  // Beweeg speler
+  // Als de linkerbeweging is ingeschakeld en de speler niet aan de linkerkant van het canvas is
+  if (moveLeft && spelerX > 0) {
+  spelerX -= 5; // Verplaats de speler naar links met 5 pixels
 }
-if (kogelVliegt === true) {
-  kogelY = kogelY + 1;
+
+// Als de rechterbeweging is ingeschakeld en de speler niet aan de rechterkant van het canvas is
+  if (moveRight && spelerX < width - spelerImg.width) {
+  spelerX += 5; // Verplaats de speler naar rechts met 5 pixels
 }
-if (kogelVliegt === true && 
-   kogelY < 0) {
-  kogelVliegt = false;
-   }
-  };
 
-/**
- * Checkt botsingen
- * Verwijdert neergeschoten dingen
- * Updatet globale variabelen punten en health
- */
-var verwerkBotsing = function() {
-  // botsing speler tegen vijand
+// Als de omhoogbeweging is ingeschakeld en de speler niet aan de bovenkant van het canvas is
+  if (moveUp && spelerY > 0) {
+  spelerY -= 5; // Verplaats de speler omhoog met 5 pixels
+}
 
-  // botsing kogel tegen vijand
+// Als de omlaagbeweging is ingeschakeld en de speler niet aan de onderkant van het canvas is
+  if (moveDown && spelerY < height - spelerImg.height) {
+  spelerY += 5; // Verplaats de speler omlaag met 5 pixels
+}
 
-  // update punten en health
+  // Controleer botsing met blauwe ellips
+  var d = dist(spelerX + spelerWidth / 2, spelerY + spelerHeight / 2, kogelX, kogelY);
+  if (d < spelerWidth / 2 + 5) {
+    spelStatus = GAMEOVER;
+  }
 
+  // Controleer botsing met groene vierkanten
+  for (var i = vierkanten.length - 1; i >= 0; i--) {
+    var vierkant = vierkanten[i];
+    var vierkantCenterX = vierkant.x + 10;
+    var vierkantCenterY = vierkant.y + 10;
+    var d = dist(spelerX + spelerWidth / 2, spelerY + spelerHeight / 2, vierkantCenterX, vierkantCenterY); 
+    if (d < spelerWidth / 2 + 10) {
+      score += 10;
+      vierkanten.splice(i, 1); // verdwijnt vierkant (internet)
+    }
+  }
+
+  // Beweeg kogel
+  kogelY -= 1;
+  if (kogelY < -10) {
+    kogelX = random(0, width);
+    kogelY = height + 10;
+  }
+
+  // Voeg nieuwe vierkant toe
+  var elapsedSeconds = (millis() - startTime) / 1000;
+  if (elapsedSeconds - lastVierkantTime > 1) {
+    var nieuwVierkantX = random(0, width - 20);
+    var nieuwVierkantY = -20;
+    var nieuwVierkant = createVector(nieuwVierkantX, nieuwVierkantY);
+    vierkanten.push(nieuwVierkant); // van internet
+    lastVierkantTime = elapsedSeconds;
+  }
+
+  // Beweeg en verwijder vierkanten
+  for (var i = vierkanten.length - 1; i >= 0; i--) {
+    var vierkant = vierkanten[i];
+    vierkant.y += 1;
+    if (vierkant.y > height) {
+      vierkanten.splice(i, 1);
+    }
+  }
 };
 
 /**
- * Tekent spelscherm
+ * Tekent speler, kogel, vierkanten en timer op het canvas
  */
 var tekenAlles = function() {
-  // achtergrond
-  
-  fill('green');
-  rect(0, 0, 1280, 720);
-  // vijand
+  // Wis het canvas
+  background(138,169,246);
 
-  //vijand 2
-  
-  // kogel
-  fill("red");
-  ellipse (kogelX, kogelY, 20, 20);
-  
-  // speler
-  fill("white");
-  image(img, spelerX - 25, spelerY - 25, 110, 75);
-  fill("black");
-  ellipse(spelerX, spelerY, 10, 10);
+  // Teken speler
+  image(spelerImg, spelerX, spelerY, spelerWidth, spelerHeight);
 
+  // Teken kogel
+  fill(0, 0, 255);
+  ellipse(kogelX, kogelY, 10, 10);
 
-  
-  // punten en health
-
-};
-
-/**
- * return true als het gameover is
- * anders return false
- */
-var checkGameOver = function() {
-  if (spelerX - kogelX < 50 &&
-    spelerX - kogelX > -50 &&
-    spelerY - kogelY < 50 &&
-    spelerY - kogelY > -50) {
-    //aantal = aantal + 1;
-    //console.log("Botsing" + aantal);
-    return true;
+  // Teken vierkanten
+  fill(0, 255, 0);
+  for (var i = 0; i < vierkanten.length; i++) {
+    var vierkant = vierkanten[i];
+    rect(vierkant.x, vierkant.y, 20, 20);
   }
-  // check of HP 0 is , of tijd op is, of ...
-  return false;
+
+  // Teken score
+  fill(255);
+  textAlign(RIGHT, TOP);
+  textSize(24);
+  text("Score: " + score, width - 10, 10);
 };
 
-/* ********************************************* */
-/* setup() en draw() functies / hoofdprogramma   */
-/* ********************************************* */
+/* ***** */
+/* P5.js functies */
+/* ***** */
 
 function preload() {
-  img = loadImage('auto 2.png');
+  // Laad de afbeelding voor de speler
+  spelerImg = loadImage('car.jpg');
 }
 
-/**
- * setup
- * de code in deze functie wordt één keer uitgevoerd door
- * de p5 library, zodra het spel geladen is in de browser
- */
 function setup() {
-  // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
-  createCanvas(1280, 720);
+  // Maak het canvas
+  createCanvas(400, 400);
 
-  // Kleur de achtergrond blauw, zodat je het kunt zien
-  background('rgb(138,169,246)');
+  // Initialiseer speler
+  spelerWidth = 40;
+  spelerHeight = 40;
+  spelerX = width / 2 - spelerWidth / 2;
+  spelerY = height - spelerHeight;
+
+  // Initialiseer kogel
+  kogelX = random(0, width);
+  kogelY = height + 10;
+
+  // Initialiseer vierkanten
+  lastVierkantTime = 0;
+
+  // Initialiseer tijd
+  startTime = millis();
 }
 
-/**
- * draw
- * de code in deze functie wordt 50 keer per seconde
- * uitgevoerd door de p5 library, nadat de setup functie klaar is
- */
 function draw() {
   if (spelStatus === SPELEN) {
+    // Beweeg en teken alles
     beweegAlles();
-    verwerkBotsing();
     tekenAlles();
-    if (checkGameOver()) {
-      spelStatus = GAMEOVER;
-    }
-    console.log("spelen");
+  } else if (spelStatus === GAMEOVER) {
+    // Teken game-over bericht
+    background(0);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(24);
+    text("Game Over", width / 2, height / 2);
+    text("Press Enter to Play Again", width / 2, height / 2 + 30);
+  } else {
+    // Teken uitleg bericht
+    background(0);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(24);
+    text("Press Enter to Play", width / 2, height / 2);
+  }
+}
 
-
+function keyPressed() {
+  // Start het spel bij Enter
+  if (keyCode === ENTER && spelStatus !== SPELEN) {
+    spelStatus = SPELEN;
+    startTime = millis();
+    vierkanten = [];
   }
 
-  if (spelStatus === GAMEOVER) {
-    // teken game-over scherm
-    console.log("game over");
-    textSize(20);
-    fill("black");
-    text("game over, druk spatie voor start", 100, 100);
-    if (keyIsDown(32 )) { //spaties
-      spelStatus = UITLEG;
-
-    }
+  // Beweeg speler bij pijltjestoetsen
+  if (keyCode === LEFT_ARROW) {
+    moveLeft = true;
   }
-  if (spelStatus === UITLEG) {
-    // teken uitleg scherm
-    console.log("uitleg");
-    textSize(50);
-    fill("green");
-    rect(0, 0, 1280, 720);
-    fill("white");
-    text("uitleg doe je ding, druk op enter", 100, 100);
-    if (keyIsDown(13)) { //enter
-      spelerX = 30;
-      spelerY = 350;
-      spelStatus = SPELEN;
-
-    }
-
+  if (keyCode === RIGHT_ARROW) {
+    moveRight = true;
   }
+  if (keyCode === UP_ARROW) {
+    moveUp = true;
+  }
+  if (keyCode === DOWN_ARROW) {
+    moveDown = true;
+  }
+}
 
+function keyReleased() {
+  // Reset beweging bij loslaten pijltjestoetsen
+  if (keyCode === LEFT_ARROW) {
+    moveLeft = false;
+  }
+  if (keyCode === RIGHT_ARROW) {
+    moveRight = false;
+  }
+  if (keyCode === UP_ARROW) {
+    moveUp = false;
+  }
+  if (keyCode === DOWN_ARROW) {
+    moveDown = false;
+  }
 }
